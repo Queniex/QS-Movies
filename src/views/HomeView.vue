@@ -9,13 +9,9 @@
       <div class="w-full h-full flex justify-center items-center">
         <div class="h-3/5 w-full">
           <div class="my-5">
-            <h1 class="font-normal text-[25px] mb-3 text-white">Lorem <span class="text-[#4194D8]">ipsum dolor</span> sit
-              amet <span class="text-[#4194D8]">consectetur</span> adipisicing elit.
-              Unde rerum
-              nihil
-              nostrum
-              <span class="text-[#4194D8]">recusandae consequuntur</span>
-              illum deleniti iste sunt tempore odit?
+            <h1 class="font-normal text-[25px] mb-3 text-white">Discover the magic of <span
+                class="text-[#4194D8]">movies</span> with our website <span class="text-[#4194D8]">– your gateway</span>
+              to finding every captivating detail of your <span class="text-[#4194D8]">favorite films</span>.
             </h1>
 
             <router-link to="/genre"

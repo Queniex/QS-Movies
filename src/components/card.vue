@@ -11,7 +11,7 @@
                 </div>
                 <hr class="border-t-4 border-white">
                 <div class="p-3 flex justify-center items-center">
-                    <button data-modal-target="defaultModal" data-modal-toggle="defaultModal"
+                    <button @click="detailCard(movie.imdbID)"
                         class="px-2 py-1 font-medium text-blue-800 hover:text-blue-400" type="button">
                         See Detail
                     </button>
@@ -20,19 +20,17 @@
         </div>
 
         <!-- Main modal -->
-        <div id="defaultModal" aria-hidden="true"
-            class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div v-if="isModalVisible" id="modalCard" aria-hidden="true"
+            class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
             <div class="relative w-full max-w-2xl max-h-full">
-                <!-- Modal content -->
                 <div class="relative bg-white rounded-lg shadow ">
-                    <!-- Modal header -->
                     <div class="flex items-start justify-between p-4 border-b rounded-t ">
                         <h3 class="text-xl text-center font-bold text-black">
                             {{ movie.Title }}
                         </h3>
-                        <button type="button"
+                        <button @click="closeModal()" type="button"
                             class="text-gray-400 bg-transparent hover:bg-blue-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center "
-                            data-modal-hide="defaultModal">
+                            data-modal-hide="modalCard">
                             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 14 14">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -45,24 +43,20 @@
                     <div class="p-4 space-y-2">
                         <div class="flex gap-3">
                             <div class="basis-1/4 flex justify-center items-center">
-                                <img src="https://m.media-amazon.com/images/M/MV5BMDEwNTAwNjMtNTgwZC00Y2RjLTliOTYtZWI4NGNlNjI4ZTVjXkEyXkFqcGdeQXVyMTA0MTM5NjI2._V1_SX300.jpg"
-                                    alt="">
+                                <img :src="movie.Poster" alt="">
                             </div>
                             <div class="basis-3/4">
                                 <div class="font-semibold mb-2">
-                                    <h1>Genre :</h1>
-                                    <h1>Year : </h1>
-                                    <h1>Actor : </h1>
-                                    <h1>Language : </h1>
-                                    <h1>Country : </h1>
+                                    <h1>Genre : {{ movie.Genre }}</h1>
+                                    <h1>Year : {{ movie.Year }}</h1>
+                                    <h1>Actor : {{ movie.Actors }}</h1>
+                                    <h1>Language : {{ movie.Language }}</h1>
+                                    <h1>Country : {{ movie.Country }}</h1>
                                 </div>
                                 <hr>
-                                <h2>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam aut unde
-                                    suscipit eaque impedit commodi error sequi omnis deleniti a? Lorem ipsum, dolor
-                                    sit amet consectetur adipisicing elit. Ullam aut unde
-                                    suscipit eaque impedit commodi error sequi omnis deleniti a?</h2>
+                                <h2>{{ movie.Plot }}</h2>
                                 <hr>
-                                <h3 class="font-semibold mt-2">iMDb Rating : </h3>
+                                <h3 class="font-semibold mt-2">iMDb Rating : {{ movie.imdbRating }}</h3>
                             </div>
                         </div>
                     </div>
@@ -73,9 +67,35 @@
 </template>
   
 <script>
+import axios from 'axios';
+
 export default {
     name: 'Card',
-    props: ['movie']
+    props: ['movie'],
+    data() {
+        return {
+            isModalVisible: false,
+            movie: [],
+        }
+    },
+    methods: {
+        setMovie(data) {
+            this.movie = data;
+        },
+        detailCard(id) {
+            this.isModalVisible = true;
+            console.log(id);
+            axios
+                .get('http://www.omdbapi.com/?apikey=beded0cc&i=' + id)
+                .then((response) => {
+                    this.setMovie(response.data)
+                })
+                .catch((error) => console.log("Fail : ", error))
+        },
+        closeModal() {
+            this.isModalVisible = false;
+        }
+    }
 }
 </script>
   
@@ -83,5 +103,13 @@ export default {
 /* * {
     border: 1px solid blue;
 } */
+
+#modalCard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Menambahkan latar belakang semi-transparan */
+}
 </style>
   

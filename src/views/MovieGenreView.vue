@@ -52,6 +52,11 @@
                     </div>
                 </div>
             </div>
+            <div class="mt-5">
+                <div v-if="movies === 0">
+                    <notFound />
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -85,11 +90,17 @@ export default {
             this.searchMovie(data);
         },
         searchMovie(search) {
+            this.selectedGenre = '';
             axios
                 .get('http://www.omdbapi.com/?apikey=beded0cc&s=' + search)
                 .then((response) => {
-                    const moviesData = response.data.Search.slice(0, 10);
-                    this.setMovie(moviesData);
+                    console.log(response.data.Response);
+                    if (response.data.Response !== 'False') {
+                        const moviesData = response.data.Search.slice(0, 10);
+                        this.setMovie(moviesData);
+                    } else {
+                        this.movies = 0;
+                    }
                 })
                 .catch((error) => console.log("Fail : ", error))
         },
