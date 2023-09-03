@@ -1,6 +1,6 @@
 <template>
     <div class="not-found">
-        <div class="flex justify-center items-center mt-20">
+        <div class="flex justify-center items-center mt-10">
             <div class="w-1/4 h-1/4 text-center">
                 <h1 class="text-white font-semibold mb-5">"Aw, there's <span class="text-blue-300">no keyword</span>
                     found..."</h1>
