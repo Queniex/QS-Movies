@@ -4,7 +4,7 @@
             <div class="grid grid-cols-5">
                 <logo />
                 <div class="col-span-4">
-                    <SearchBar />
+                    <SearchBar :dataFromSB="dataFromSB" @sbEvent="sbEvent" />
                 </div>
             </div>
 
@@ -17,36 +17,40 @@
                     </router-link>
                 </div>
                 <div class="col-span-4 flex justify-start font-semibold gap-4 text-2xl">
-                    <h1
-                        class="rounded-2xl py-1 px-2 bg-blue-300 hover:bg-transparent hover:text-white hover:underline hover:underline-offset-8 hover:cursor-pointer">
+                    <h1 class="rounded-2xl py-1 px-2 bg-blue-300 hover:cursor-pointer"
+                        :class="{ 'bg-transparent text-white underline underline-offset-8 ': selectedGenre === 'Horror' }"
+                        @click="selectGenre('Horror')">
                         Horror</h1>
-                    <h1
-                        class="rounded-2xl py-1 px-2 bg-blue-300 hover:bg-transparent hover:text-white hover:underline hover:underline-offset-8 hover:cursor-pointer">
+                    <h1 :class="{ 'bg-transparent text-white underline underline-offset-8 ': selectedGenre === 'Comedy' }"
+                        class="rounded-2xl py-1 px-2 bg-blue-300 cursor-pointer" @click="selectGenre('Comedy')">
                         Comedy</h1>
-                    <h1
-                        class="rounded-2xl py-1 px-2 bg-blue-300 hover:bg-transparent hover:text-white hover:underline hover:underline-offset-8 hover:cursor-pointer">
+                    <h1 :class="{ 'bg-transparent text-white underline underline-offset-8 ': selectedGenre === 'Thriller' }"
+                        class="rounded-2xl py-1 px-2 bg-blue-300 cursor-pointer" @click="selectGenre('Thriller')">
                         Thriller</h1>
-                    <h1
-                        class="rounded-2xl py-1 px-2 bg-blue-300 hover:bg-transparent hover:text-white hover:underline hover:underline-offset-8 hover:cursor-pointer">
+                    <h1 :class="{ 'bg-transparent text-white underline underline-offset-8 ': selectedGenre === 'Romance' }"
+                        class="rounded-2xl py-1 px-2 bg-blue-300 cursor-pointer" @click="selectGenre('Romance')">
                         Romance</h1>
-                    <h1
-                        class="rounded-2xl py-1 px-2 bg-blue-300 hover:bg-transparent hover:text-white hover:underline hover:underline-offset-8 hover:cursor-pointer">
+                    <h1 :class="{ 'bg-transparent text-white underline underline-offset-8 ': selectedGenre === 'Action' }"
+                        class="rounded-2xl py-1 px-2 bg-blue-300 cursor-pointer" @click="selectGenre('Action')">
                         Action</h1>
-                    <h1
-                        class="rounded-2xl py-1 px-2 bg-blue-300 hover:bg-transparent hover:text-white hover:underline hover:underline-offset-8 hover:cursor-pointer">
+                    <h1 :class="{ 'bg-transparent text-white underline underline-offset-8 ': selectedGenre === 'Drama' }"
+                        class="rounded-2xl py-1 px-2 bg-blue-300 cursor-pointer" @click="selectGenre('Drama')">
                         Drama</h1>
-                    <h1
-                        class="rounded-2xl py-1 px-3 bg-blue-300 hover:bg-transparent hover:text-white hover:underline hover:underline-offset-8 hover:cursor-pointer">
+                    <h1 :class="{ 'bg-transparent text-white underline underline-offset-8 ': selectedGenre === 'Fiction' }"
+                        class="rounded-2xl py-1 px-3 bg-blue-300 cursor-pointer" @click="selectGenre('Fiction')">
                         Fiction</h1>
-                    <h1
-                        class="rounded-2xl py-1 px-2 bg-blue-300 hover:bg-transparent hover:text-white hover:underline hover:underline-offset-8 hover:cursor-pointer">
+                    <h1 :class="{ 'bg-transparent text-white underline underline-offset-8 ': selectedGenre === 'Family' }"
+                        class="rounded-2xl py-1 px-2 bg-blue-300 cursor-pointer" @click="selectGenre('Family')">
                         Family</h1>
                 </div>
             </div>
             <hr>
-            <div class="mt-10">
-                <!-- <card /> -->
-                <notFound />
+            <div class="mt-10 flex flex-wrap">
+                <div v-for="movie in movies" :key="movie.imdbID" class="w-1/5 p-2">
+                    <div class="flex">
+                        <card :movie="movie" />
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -57,6 +61,7 @@ import logo from '@/components/logo.vue'
 import SearchBar from '@/components/searchBar.vue'
 import card from '@/components/card.vue';
 import notFound from '@/components/notFound.vue';
+import axios from "axios";
 
 export default {
     name: 'MovieGenreView',
@@ -65,6 +70,48 @@ export default {
         SearchBar,
         card,
         notFound
+    },
+    data() {
+        return {
+            movies: [],
+            selectedGenre: '',
+        }
+    },
+    methods: {
+        setMovie(data) {
+            this.movies = data;
+        },
+        sbEvent(data) {
+            this.searchMovie(data);
+        },
+        searchMovie(search) {
+            axios
+                .get('http://www.omdbapi.com/?apikey=beded0cc&s=' + search)
+                .then((response) => {
+                    const moviesData = response.data.Search.slice(0, 10);
+                    this.setMovie(moviesData);
+                })
+                .catch((error) => console.log("Fail : ", error))
+        },
+        selectGenre(genre) {
+            this.selectedGenre = genre;
+            axios
+                .get('http://www.omdbapi.com/?apikey=beded0cc&s=' + genre)
+                .then((response) => {
+                    const moviesData = response.data.Search.slice(0, 10);
+                    this.setMovie(moviesData);
+                })
+                .catch((error) => console.log("Fail : ", error))
+        }
+    },
+    mounted() {
+        axios
+            .get('http://www.omdbapi.com/?apikey=beded0cc&s=family')
+            .then((response) => {
+                const moviesData = response.data.Search.slice(0, 10);
+                this.setMovie(moviesData);
+            })
+            .catch((error) => console.log("Fail :", error));
     }
 }
 </script>
