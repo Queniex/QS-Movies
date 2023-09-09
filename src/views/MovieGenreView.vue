@@ -92,7 +92,7 @@ export default {
         searchMovie(search) {
             this.selectedGenre = '';
             axios
-                .get('http://www.omdbapi.com/?apikey=beded0cc&s=' + search)
+                .get('https://www.omdbapi.com/?apikey=beded0cc&s=' + search)
                 .then((response) => {
                     console.log(response.data.Response);
                     if (response.data.Response !== 'False') {
@@ -107,7 +107,7 @@ export default {
         selectGenre(genre) {
             this.selectedGenre = genre;
             axios
-                .get('http://www.omdbapi.com/?apikey=beded0cc&s=' + genre)
+                .get('https://www.omdbapi.com/?apikey=beded0cc&s=' + genre)
                 .then((response) => {
                     const moviesData = response.data.Search.slice(0, 10);
                     this.setMovie(moviesData);
@@ -117,7 +117,7 @@ export default {
     },
     mounted() {
         axios
-            .get('http://www.omdbapi.com/?apikey=beded0cc&s=family')
+            .get('https://www.omdbapi.com/?apikey=beded0cc&s=family')
             .then((response) => {
                 const moviesData = response.data.Search.slice(0, 10);
                 this.setMovie(moviesData);

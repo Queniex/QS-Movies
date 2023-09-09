@@ -86,7 +86,7 @@ export default {
             this.isModalVisible = true;
             console.log(id);
             axios
-                .get('http://www.omdbapi.com/?apikey=beded0cc&i=' + id)
+                .get('https://www.omdbapi.com/?apikey=beded0cc&i=' + id)
                 .then((response) => {
                     this.setMovie(response.data)
                 })
