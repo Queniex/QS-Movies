@@ -21,11 +21,11 @@
         </div>
       </div>
       <div class="w-full h-full">
-        <input type="image" src="https://i.postimg.cc/1RqGy4zf/941f06dc16844ef478a13d246871a49f-removebg-preview.png"
-          alt="" width="400px" class="absolute -top-0 right-10">
-        <img src="https://i.postimg.cc/76xS9Nkc/f40a7a87870ae414b05e25b27fbeef0f-removebg-preview.png" width="100px"
-          alt="" class="absolute top-20 right-10 animate-bounce">
-        <img src="https://i.postimg.cc/76xS9Nkc/f40a7a87870ae414b05e25b27fbeef0f-removebg-preview.png" width="80px" alt=""
+        <input type="image" :src="require('@/assets/images/cats.png')" alt="" width="400px"
+          class="absolute -top-0 right-10">
+        <img :src="require('@/assets/images/bounce.png')" width="100px" alt=""
+          class="absolute top-20 right-10 animate-bounce">
+        <img :src="require('@/assets/images/bounce.png')" width="80px" alt=""
           class="absolute bottom-20 right-600 animate-bounce">
       </div>
     </div>
